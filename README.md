@@ -1,24 +1,20 @@
-<p align="center">
-<a href="https://dscvit.com">
-	<img src="https://user-images.githubusercontent.com/30529572/92081025-fabe6f00-edb1-11ea-9169-4a8a61a5dd45.png" alt="DSC VIT"/>
-</a>
-	<h2 align="center"> rust-rocket-template </h2>
-	<h4 align="center"> An opinionated template for quickly getting started with Rust, Rocket and Diesel <h4>
-</p>
+# Pokemon card api using Rust and Rocket
 
-![Continuous integration](https://github.com/GDGVIT/rust-rocket-template/workflows/Continuous%20integration/badge.svg)
+This project is a part of [e-monkeys.tech](https://github.com/e-monkeys-tech/e-monkeys.tech) website building project. Is still under development.
+It is freely-inspired by opinionated template [rust-rocket-template](https://github.com/GDGVIT/rust-rocket-template).
 
+The purpose is designing atomic api models (here for a pokemon_card object and in future to implement a selling interface for our playing cards in https://e-monkeys.tech/cards/pokemon/shop).
+
+Refer to TODO section to see futures improvements.
 
 ## Features
+
 - [x] Diesel - ORM for SQL databases
 - [x] Sample CRUD for a table  
 - [x] Easy error handling and CORS 
 - [x] Unit tests
 
-<br>
-
-
-## Instructions to run
+## Usage
 
 * Pre-requisites:
 	-  [Rust _nightly_](https://rustup.rs)
@@ -34,30 +30,89 @@ diesel migration run
 ```bash
 cargo run
 ```
+![](src/example-run-output.png)
 
-## Contributors
+## Examples
 
-<table>
-<tr align="center">
+GET /api/pokemon_cards/<ID>
+```bash
+$ curl -X GET http://localhost:8000/api/pokemon_cards/7c64fe5c-ad99-4d6a-922b-9723bc08a86e | jq
 
+{
+  "id": "7c64fe5c-ad99-4d6a-922b-9723bc08a86e",
+  "type_item": "Carte",
+  "keytag": "Pokemon",
+  "product_state": "Neuve",
+  "lang_edition": "VFR",
+  "subcollection": "Regne_de_Glace",
+  "collection_name": "Epee_et_Bouclier",
+  "collection_str_id": "EB06",
+  "pokemon_str_id": "33/198",
+  "pokemon_description": "Morphéo_Forme_Eau_de_Pluie_REVERSE",
+  "is_available": true
+}
+```
 
-<td>
+GET /api/pokemon_cards/name/<String>
+```bash
+$ curl -X GET http://localhost:8000/api/pokemon_cards/name/Racaillou_d\'Alola | jq
 
-Amogh Lele
+{
+  "id": "fc263dd0-785f-4b57-a22a-b4fe0219ca9e",
+  "type_item": "Carte",
+  "keytag": "Pokemon",
+  "product_state": "Neuve",
+  "lang_edition": "VFR",
+  "subcollection": "Gardiens_Ascendants",
+  "collection_name": "Soleil_et_Lune",
+  "collection_str_id": "SL2",
+  "pokemon_str_id": "40/145",
+  "pokemon_description": "Racaillou_d'Alola",
+  "is_available": true
+}
+```
+
+POST /api/pokemon_cards/
+
+*Note that 'id' property is automatically created during a call to method* **POST /api/pokemon_cards application/json (create)**
+```bash
+$ curl -d '{
+  	"type_item": "Carte",
+  	"keytag": "Pokemon",
+  	"product_state": "Neuve",
+  	"lang_edition": "VFR",
+  	"subcollection": "Regne_de_Glace",
+  	"collection_name": "Epee_et_Bouclier",
+  	"collection_str_id": "EB06",
+  	"pokemon_str_id": "170/198",
+  	"pokemon_description": "Artikodin_de_Galar_V_Full_Art",
+  	"is_available": true
+}' -H "Content-Type: application/json" -X POST http://localhost:8000/api/pokemon_cards | jq
+
+{
+  "id": "4082eb06-1c4e-4027-bc2a-961659dffd67",
+  "type_item": "Carte",
+  "keytag": "Pokemon",
+  "product_state": "Neuve",
+  "lang_edition": "VFR",
+  "subcollection": "Regne_de_Glace",
+  "collection_name": "Epee_et_Bouclier",
+  "collection_str_id": "EB06",
+  "pokemon_str_id": "170/198",
+  "pokemon_description": "Artikodin_de_Galar_V_Full_Art",
+  "is_available": true
+}
+
+curl -X GET http://localhost:8000/api/pokemon_cards/name/Artikodin_de_Galar_V_Full_Art | jq .id
+"4082eb06-1c4e-4027-bc2a-961659dffd67"
+```
+
+DELETE /api/pokemon_cards/<obj_id>
+```bash
+curl -X DELETE http://localhost:8000/api/pokemon_cards/4082eb06-1c4e-4027-bc2a-961659dffd67
+{"id":"4082eb06-1c4e-4027-bc2a-961659dffd67","type_item":"Carte","keytag":"Pokemon","product_state":"Neuve","lang_edition":"VFR","subcollection":"Regne_de_Glace","collection_name":"Epee_et_Bouclier","collection_str_id":"EB06","pokemon_str_id":"170/198","pokemon_description":"Artikodin_de_Galar_V_Full_Art","is_available":true}
+```
 
 <p align="center">
-<img src = "https://avatars3.githubusercontent.com/u/31761843" width="150" height="150" alt="Amogh Lele">
-</p>
-<p align="center">
-<a href = "https://github.com/atechnohazard"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36" alt="GitHub"/></a>
-<a href = "https://www.linkedin.com/in/amogh-lele-830131a4/">
-<img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36" alt="LinkedIn"/>
-</a>
-</p>
-</td>
-
-  </table>
-
-<p align="center">
-	Made with :heart: by <a href="https://dscvit.com">DSC VIT</a>
+Made with :heart: by <a href="https://github.com/e-monkeys-tech">e-monkeys.tech</a>
 </p>

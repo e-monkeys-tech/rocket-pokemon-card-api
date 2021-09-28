@@ -2,14 +2,13 @@ use rocket::Rocket;
 use rocket_cors::CorsOptions;
 
 pub mod users;
+pub mod pokemon_cards;
 
 pub fn fuel(rocket: Rocket) -> Rocket {
     let mut rocket = rocket;
-    let cors = CorsOptions::default().to_cors().unwrap();
-
-    rocket = users::fuel(rocket);
-    rocket.attach(cors)
+    let _cors = CorsOptions::default().to_cors().unwrap();
 
     rocket = pokemon_cards::fuel(rocket);
-    rocket.attach(cors)
+    rocket = users::fuel(rocket);
+    rocket.attach(_cors)
 }

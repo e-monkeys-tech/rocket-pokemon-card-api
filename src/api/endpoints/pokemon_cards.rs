@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::crud::pokemon_cards;
 use crate::db::guard::DbConn;
-use crate::models::pokemon_cards::User;
+use crate::models::pokemon_cards::Pokemon;
 use crate::schemas::pokemon_cards::{PokemonCreate, PokemonUpdate};
 
 #[post("/", format = "json", data = "<obj_in>")]
@@ -19,6 +19,12 @@ fn create(obj_in: Json<PokemonCreate>, db: DbConn) -> Result<Json<Pokemon>> {
 fn read(obj_id: RocketUuid, db: DbConn) -> Result<Json<Pokemon>> {
     let uuid = Uuid::from_bytes(*obj_id.as_bytes());
     let found_pokemon = pokemon_cards::find(&db, uuid)?;
+    Ok(Json(found_pokemon))
+}
+
+#[get("/name/<obj_name>")]
+fn read_name(obj_name: String, db: DbConn) -> Result<Json<Pokemon>> {
+    let found_pokemon = pokemon_cards::find_by_name(&db, obj_name)?;
     Ok(Json(found_pokemon))
 }
 
@@ -36,5 +42,5 @@ fn delete(obj_id: RocketUuid, db: DbConn) -> Result<Json<Pokemon>> {
 }
 
 pub fn fuel(rocket: Rocket) -> Rocket {
-    rocket.mount("/api/pokemon_cards", routes![create, read, update, delete])
+    rocket.mount("/api/pokemon_cards", routes![create, read, read_name, update, delete])
 }

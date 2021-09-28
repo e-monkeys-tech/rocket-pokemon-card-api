@@ -38,9 +38,6 @@ fn rocket() -> rocket::Rocket {
 }
 
 fn main() {
-    // Load env variables
     dotenv::dotenv().ok();
-
-    // Launch rocket instance
     rocket().launch();
 }
