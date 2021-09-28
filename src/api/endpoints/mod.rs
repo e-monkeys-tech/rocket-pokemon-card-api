@@ -9,4 +9,7 @@ pub fn fuel(rocket: Rocket) -> Rocket {
 
     rocket = users::fuel(rocket);
     rocket.attach(cors)
+
+    rocket = pokemon_cards::fuel(rocket);
+    rocket.attach(cors)
 }
